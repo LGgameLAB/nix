@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Remote Terminal
-Exec=cosmic-term "ssh -Kt tsunami"
-Icon=org.xfce.terminal
