@@ -28,24 +28,17 @@ in
       "z /etc/prometheus_scripts/logged_in_users_exporter.sh 0755 root root -"
     ];
 
-    systemd.timers."logged_in_users_exporter" = {
-      description = "Run logged_in_users_exporter.sh every 5 seconds";
-      wantedBy = [ "multi-user.target" ];
-      timerConfig = {
-        OnBootSec = "5s";
-        OnUnitActiveSec = "5s";
-        Unit = "logged_in_users_exporter.service";
-      };
-    };
-
     systemd.services."logged_in_users_exporter" = {
+      enable = true;
       description = "Logged in users exporter";
-      script = "bash /etc/prometheus_scripts/logged_in_users_exporter.sh";
-      serviceConfig = {
-        Environment = "PATH=/run/current-system/sw/bin";
-        Type = "oneshot";
-      };
+      after = [ "network.target" ];
+      wants = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        Environment = "PATH=/run/current-system/sw/bin";
+        ExecStart = "/etc/prometheus_scripts/logged_in_users_exporter.sh";
+      };
     };
 
     services.prometheus = {
