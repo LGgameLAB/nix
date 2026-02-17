@@ -75,6 +75,7 @@ in
     ranger
     lf
     fd
+    sshfs
     dua
     rclone
 
