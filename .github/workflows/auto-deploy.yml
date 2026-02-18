@@ -17,12 +17,12 @@ jobs:
 
       - name: Setup hosts
         run: |
-          HOSTS=$(nix eval .#automatedDeployNodes --apply 'builtins.concatStringsSep " "' --raw)
+          HOSTS=$(nix eval .#autoDeploy.nodes --apply 'builtins.concatStringsSep " "' --raw)
           echo "HOSTS=$HOSTS" >> $GITHUB_ENV
 
       - name: Wake up hosts
         run: |
-          HOST_MACS=$(nix eval .#automatedDeployNodeMACs --apply 'builtins.concatStringsSep " "' --raw)
+          HOST_MACS=$(nix eval .#autoDeploy.MACs --apply 'builtins.concatStringsSep " "' --raw)
           # not using quotes here so that each mac address is a separate argument
           wol $HOST_MACS
 
