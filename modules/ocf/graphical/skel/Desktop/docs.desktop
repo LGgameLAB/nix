@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=OCF Docs
+Exec=firefox bestdocs.ocf.io
+Icon=dictionary

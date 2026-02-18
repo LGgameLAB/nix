@@ -10,17 +10,16 @@
 
   networking.hostName = "princess";
 
-  ocf.nvidia = {
-    enable = true;
-    open = false;
-  };
-
   ocf.network = {
     enable = true;
     lastOctet = 162;
   };
 
   ocf.managed-deployment.mac-address = "9c:6b:00:69:26:ac";
+
+  ocf.graphical = {
+    cosmic-scaling = "1.25";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
