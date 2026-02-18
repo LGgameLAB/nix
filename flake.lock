@@ -382,11 +382,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771359178,
-        "narHash": "sha256-mU8I7jnECtNyw3tfrJ9FiJrp0YzIcQOsX0fmQA8Xjv4=",
+        "lastModified": 1771374825,
+        "narHash": "sha256-MI1Xzv6OxCCncUtmqoUWxxGbn73g4c/RO+W2hiZ4tAY=",
         "owner": "ocf",
         "repo": "cosmic-applets",
-        "rev": "c74d86753d8cf75c30b61ef139fcca149835d1fe",
+        "rev": "ba98089b8180d6785ad28427a0c26c9488fd4896",
         "type": "github"
       },
       "original": {
