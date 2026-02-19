@@ -38,6 +38,8 @@ jobs:
           UserKnownHostsFile $GITHUB_WORKSPACE/known_hosts
           StrictHostKeyChecking yes
           UpdateHostKeys no
+          Host *
+            User ocf-nix-deploy-user
           " >> ${{ github.workspace }}/ssh_config
 
       - name: Wake up hosts
