@@ -8,8 +8,6 @@ on:
       - completed
     branches:
       - main
-  schedule:
-    - cron: "0 8 * * *"
 
 jobs:
   deploy:
@@ -19,8 +17,14 @@ jobs:
 
       - name: Setup hosts
         run: |
-          HOSTS=$(nix eval .#automatedDeployNodes --apply 'builtins.concatStringsSep " "' --raw)
+          HOSTS=$(nix eval .#autoDeploy.nodes --apply 'builtins.concatStringsSep " "' --raw)
           echo "HOSTS=$HOSTS" >> $GITHUB_ENV
+
+      - name: Wake up hosts
+        run: |
+          HOST_MACS=$(nix eval .#autoDeploy.MACs --apply 'builtins.concatStringsSep " "' --raw)
+          # not using quotes here so that each mac address is a separate argument
+          wol $HOST_MACS
 
       - name: Setup SSH
         run: |
@@ -45,6 +49,16 @@ jobs:
           echo "$HOSTS" | tr ' ' '\n' | \
           xargs -P 10 -n 1 -I {} \
           sh -c "
+            # wait for host to be online with a timeout of 5s per attempt and 12
+            # total tries, but fail immediately if the error is auth related
+            if ! ssh -o BatchMode=yes \
+                     -o ConnectTimeout=5 \
+                     -o ConnectionAttempts=12 \
+                     {} echo 'continuous deployment ping!'; then
+              echo '❌ Failed to deploy to {} (ssh timeout)'
+              echo 'FAILURE:{}' >> results.txt
+            fi
+
             if nix develop .#deploy -c colmena apply --on {} switch > {}.log 2>&1; then
               echo '✅ Successfully deployed to {}'
               echo 'SUCCESS:{}' >> results.txt
