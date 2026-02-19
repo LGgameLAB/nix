@@ -56,7 +56,8 @@ jobs:
           nix develop .#deploy -c sh -c "
             # wait for host to be online with a timeout of 5s per attempt and 12
             # total tries, but fail immediately if the error is auth related
-            if ! ssh -o BatchMode=yes \
+            if ! ssh -F \$SSH_CONFIG_FILE \
+                     -o BatchMode=yes \
                      -o ConnectTimeout=5 \
                      -o ConnectionAttempts=12 \
                      {} echo 'continuous deployment ping!' > {}.log 2>&1; then
