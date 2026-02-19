@@ -50,6 +50,7 @@ in
       {
         users = [ deploy-user ];
         commands = [
+          # needed for colmena apply
           {
             command = "/run/current-system/sw/bin/nix-store --no-gc-warning --realise /nix/store/*";
             options = [ "NOPASSWD" ];
@@ -60,6 +61,12 @@ in
           }
           {
             command = "/nix/store/*/bin/switch-to-configuration *";
+            options = [ "NOPASSWD" ];
+          }
+
+          # extra commands allowed on colmena exec
+          {
+            command = "/run/current-system/sw/bin/systemctl *";
             options = [ "NOPASSWD" ];
           }
         ];
