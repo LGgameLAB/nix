@@ -18,6 +18,9 @@ jobs:
   exec-on-hosts:
     runs-on: ci-ocf-nix-deploy
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup SSH
         run: |
           echo '${{ secrets.COLMENA_APPLY_SSH_KEY }}' > ${{ github.workspace }}/id_ed25519
