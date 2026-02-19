@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "$HOSTS" | tr ' ' '\n' | \
           xargs -P 10 -n 1 -I {} \
-          sh -c "
+          nix develop .#deploy -c sh -c "
             # wait for host to be online with a timeout of 5s per attempt and 12
             # total tries, but fail immediately if the error is auth related
             if ! ssh -o BatchMode=yes \
@@ -62,7 +62,7 @@ jobs:
               exit
             fi
 
-            if nix develop .#deploy -c colmena apply --on {} switch > {}.log 2>&1; then
+            if colmena apply --on {} switch > {}.log 2>&1; then
               echo '✅ Successfully deployed to {}'
               echo 'SUCCESS:{}' >> results.txt
             else
