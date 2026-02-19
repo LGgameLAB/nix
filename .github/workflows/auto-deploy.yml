@@ -24,7 +24,9 @@ jobs:
         run: |
           HOST_MACS=$(nix eval .#autoDeploy.MACs --apply 'builtins.concatStringsSep " "' --raw)
           # not using quotes here so that each mac address is a separate argument
-          wol $HOST_MACS
+          if ! nix develop .#deploy -c wol $HOST_MACS; then
+            echo '❌ Failed to wakeup nodes'
+          fi
 
       - name: Setup SSH
         run: |
@@ -57,6 +59,7 @@ jobs:
                      {} echo 'continuous deployment ping!'; then
               echo '❌ Failed to deploy to {} (ssh timeout)'
               echo 'FAILURE:{}' >> results.txt
+              exit
             fi
 
             if nix develop .#deploy -c colmena apply --on {} switch > {}.log 2>&1; then
